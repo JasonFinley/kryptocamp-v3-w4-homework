@@ -51,9 +51,9 @@ const ERC721Assignment = () => {
      */
     if( contract ){
       let contractTotalSupply = getContractTotalSupply();
-        contractTotalSupply.then( (res) => {
-          setTotalSupply( res.toNumber() );
-        } );
+      contractTotalSupply.then( (res) => {
+        setTotalSupply( res.toNumber() );
+      } );
     }
 
   }, [ contract ]);
