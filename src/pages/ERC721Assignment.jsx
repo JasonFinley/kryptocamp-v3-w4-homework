@@ -221,8 +221,10 @@ const OwnerListItem = ({ tokenId, contract }) => {
      */
     let contractOwnerOf = getContractOwnerOf( tokenId );
     contractOwnerOf.then( (res) => { 
-      setOwnerAddress( res );
+      setOwnerAddress( res.toString() );
      } );
+
+
   }, [ contract ]);
 
   return (
