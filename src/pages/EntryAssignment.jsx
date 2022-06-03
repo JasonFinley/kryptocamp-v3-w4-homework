@@ -34,6 +34,10 @@ const EntryAssignment = () => {
 
   }, []);
 
+  async function getContractCounter(){
+    return await contract.counter();
+  }
+
   const [counter, setCounter] = useState();
   useEffect(() => {
     /*
@@ -43,14 +47,11 @@ const EntryAssignment = () => {
      * 如果寫成功，則 <div>counter: {counter}</div> 處就會顯示 counter 的數值
      * 提示: 透過 ethers.js 取得的 counter 數值為 bigNumber，請想辦法轉換成數字或是字串
      */
-
-    const getContractData = async () => {
-      let num = await contract.counter();
-      setCounter( num.toNumber() );
-    }
-    
+   
     if( contract ){
-      getContractData();      
+      getContractCounter().then( (res) => {
+        setCounter( res.toNumber() );
+      } );      
     }
 
   }, [ contract ]);
@@ -76,10 +77,12 @@ const EntryAssignment = () => {
      * 注意: 由於開發時頁面會重新刷新，會導致 setInterval 無法清除，因此請透過 useEffect 中的 return 清除 setInterval
      * 參考資料: https://developer.mozilla.org/zh-TW/docs/Web/API/setInterval
      */
-    let interval = window.setInterval( async () => {
+    let interval = window.setInterval( () => {
         if( contract ){
-          let num = await contract.counter();
-          setCounter( num.toNumber() );
+          getContractCounter().then( (res) => {
+            setCounter( res.toNumber() );
+          } );
+          
         }
       } , 1000);
 
