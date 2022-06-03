@@ -19,6 +19,7 @@ async function isRinkebyTestNet(){
  * 97. BSC testnet
  * 43114. Avalanche mainnet
  */
+  //判斷是否為Rinkeby 測試鏈
   if( networkId !== 4 ){
     const NETWORK_ID = 4;
     window.ethereum.request({
@@ -42,6 +43,7 @@ const BlockchainContextProvider = ({ children }) => {
      * 加分項目2: 使用 window.ethereum 偵測目前的鏈是否為 Rinkeby，如果不是，則透過 window.ethereum 跳出換鏈提示
      * 提示: Rinkeby chain ID 為 0x4
      */
+    //更新換錢包
     const updateCurrentAccounts = accounts => {
       const [ walletAccount ] = accounts;
       setCurrentAccount( walletAccount ); 
@@ -50,6 +52,7 @@ const BlockchainContextProvider = ({ children }) => {
     window.ethereum.request({ method: 'eth_requestAccounts' }).then( updateCurrentAccounts );
     window.ethereum.on("accountsChanged", updateCurrentAccounts);
 
+    //檢查錢包是否為rinkeby測試鏈
     isRinkebyTestNet();
 
     return () => {

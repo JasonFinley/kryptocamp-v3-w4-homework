@@ -45,7 +45,7 @@ const EntryAssignment = () => {
      */
 
     const getContractData = async () => {
-      const num = await contract.counter();
+      let num = await contract.counter();
       setCounter( num.toNumber() );
     }
     
