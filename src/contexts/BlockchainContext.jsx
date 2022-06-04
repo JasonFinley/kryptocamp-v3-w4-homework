@@ -3,7 +3,8 @@ import { ethers } from "ethers";
 
 export const BlockchainContext = React.createContext({
   currentAccount: null,
-  provider: null
+  provider: null,
+  myKey : null,
 });
 
 async function isRinkebyTestNet(){
@@ -32,6 +33,7 @@ async function isRinkebyTestNet(){
 
 const BlockchainContextProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = React.useState(null);
+  const [myKey, setMyKey] = React.useState("123678");
   const [provider, setProvider] = React.useState(null);
 
   React.useEffect( () => {
@@ -49,8 +51,15 @@ const BlockchainContextProvider = ({ children }) => {
       setCurrentAccount( walletAccount ); 
     }
 
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then( updateCurrentAccounts );
-    window.ethereum.on("accountsChanged", updateCurrentAccounts);
+    window.ethereum?.request({ method: 'eth_requestAccounts' }).then( updateCurrentAccounts );
+    window.ethereum?.on("accountsChanged", updateCurrentAccounts);
+/*
+    上行 ? 等於 語法糖..
+    if( window.ethereum ){
+      window.ethereum.request({ method: 'eth_requestAccounts' }).then( updateCurrentAccounts );
+      window.ethereum.on("accountsChanged", updateCurrentAccounts);
+    }
+*/
 
     //檢查錢包是否為rinkeby測試鏈
     isRinkebyTestNet();
@@ -74,7 +83,7 @@ const BlockchainContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <BlockchainContext.Provider value={{ currentAccount, provider }}>
+    <BlockchainContext.Provider value={{ currentAccount, provider, myKey }}>
       {children}
     </BlockchainContext.Provider>
   );

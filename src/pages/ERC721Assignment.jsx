@@ -207,7 +207,7 @@ const OwnerListItem = ({ tokenId, contract }) => {
   const { currentAccount, provider } = useContext(BlockchainContext);
 
   async function getContractOwnerOf( tokenID ){
-    return await contract.ownerOf( tokenID );
+    return await contract?.ownerOf( tokenID );
   }
 
   const [ownerAddress, setOwnerAddress] = useState();
@@ -220,8 +220,9 @@ const OwnerListItem = ({ tokenId, contract }) => {
      * 如果寫成功，則 {ownerAddress} 處就會顯示 ownerAddress 的數值
      */
     let contractOwnerOf = getContractOwnerOf( tokenId );
-    contractOwnerOf.then( (res) => { 
-      setOwnerAddress( res.toString() );
+    contractOwnerOf.then( (res) => {
+      console.log( "res" , res);   
+      setOwnerAddress( res?.toString() );
      } );
 
 
