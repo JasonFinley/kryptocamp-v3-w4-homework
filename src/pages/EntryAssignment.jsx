@@ -19,18 +19,19 @@ const EntryAssignment = () => {
      * 2. 取得目前 block (區塊) 中的 gas fee，並在建立 Contract 物件的時候帶入 gasLimit 參數
      * 參考資料: https://docs.ethers.io/v5/getting-started/#getting-started--contracts
      */
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-
-    provider.getBlock().then( block => {
-      const myContract = new ethers.Contract(
-        contractAddress, 
-        contractABI, 
-        provider, { 
-          gasLimit: block.gasLimit
-        });
-      setContract( myContract.connect(signer) );
-    })
+    if( provider )
+    {
+      const signer = provider.getSigner();
+      provider.getBlock().then( block => {
+        const myContract = new ethers.Contract(
+          contractAddress, 
+          contractABI, 
+          provider, { 
+            gasLimit: block.gasLimit
+          });
+        setContract( myContract.connect(signer) );
+      })
+    }
 
   }, []);
 
@@ -47,10 +48,10 @@ const EntryAssignment = () => {
      * 如果寫成功，則 <div>counter: {counter}</div> 處就會顯示 counter 的數值
      * 提示: 透過 ethers.js 取得的 counter 數值為 bigNumber，請想辦法轉換成數字或是字串
      */
-   
+
     if( contract ){
       getContractCounter().then( (res) => {
-        setCounter( res.toNumber() );
+        setCounter( res?.toNumber() );
       } );      
     }
 
@@ -80,7 +81,7 @@ const EntryAssignment = () => {
     let interval = window.setInterval( () => {
         if( contract ){
           getContractCounter().then( (res) => {
-            setCounter( res.toNumber() );
+            setCounter( res?.toNumber() );
           } );
           
         }

@@ -20,19 +20,18 @@ const ERC721Assignment = () => {
      * 參考資料: https://docs.ethers.io/v5/getting-started/#getting-started--contracts
      */
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-
-    provider.getBlock().then( block => {
-      const myContract = new ethers.Contract(
-        contractAddress, 
-        contractABI, 
-        provider, { 
-          gasLimit: block.gasLimit
-        });
-      setContract( myContract.connect(signer) );
-    })
-
+    if( provider ){
+      const signer = provider.getSigner();
+      provider.getBlock().then( block => {
+        const myContract = new ethers.Contract(
+          contractAddress, 
+          contractABI, 
+          provider, { 
+            gasLimit: block.gasLimit
+          });
+        setContract( myContract.connect(signer) );
+      })
+    }
   
   }, []);
 
@@ -59,7 +58,7 @@ const ERC721Assignment = () => {
   }, [ contract ]);
 
   async function getContractPrice(){
-    return await contract.mintPrice();
+    return await contract?.mintPrice();
   }
   const [mintPrice, setPrice] = useState();
   useEffect(() => {
@@ -84,7 +83,7 @@ const ERC721Assignment = () => {
   }, [ contract ]);
 
   async function getContractBalanceOf( account ){
-    return await contract.balanceOf( account );
+    return await contract?.balanceOf( account );
   }
   const [accountBalance, setAccountBalance] = useState();
   useEffect(() => {
